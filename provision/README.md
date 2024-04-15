@@ -1,2 +1,2 @@
 # ci-cd-pipeline
-Terraform and Terragrunt
+Terraform and Terragrunt(a thin wrapper)
