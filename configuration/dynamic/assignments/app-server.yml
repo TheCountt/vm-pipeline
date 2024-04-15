@@ -1,0 +1,9 @@
+---
+- hosts: tag_Name_ACS_app_server
+  become: true
+  environment: 
+    HOME: /home/ubuntu
+    USER: ubuntu
+  tags: ACS-app-server
+  roles:
+     - fms-app

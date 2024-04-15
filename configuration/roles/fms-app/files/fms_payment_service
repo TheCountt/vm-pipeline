@@ -1,0 +1,15 @@
+[program:fms_payment_service]
+command=php -S 127.0.0.1:8055 -t /var/www/fms-payment-service/public/
+autostart=true
+autorestart=true
+user=ubuntu
+stderr_logfile=/var/log/supervisor/fms_payment_service.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_payment_service.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug

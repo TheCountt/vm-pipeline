@@ -1,0 +1,9 @@
+---
+- hosts: fms-app
+  become: true
+  environment: 
+    HOME: /home/thecountt
+    USER: thecountt
+  tags: fms-app
+  roles:
+     - fms-app

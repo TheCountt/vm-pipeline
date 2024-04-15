@@ -1,0 +1,22 @@
+[program:fms_frontend]
+command=sh /var/www/fms-frontend/npm.sh
+directory=/var/www/fms-frontend/
+user=ubuntu
+autostart=true
+autorestart=unexpected
+stopwaitsecs=10
+exitcodes=0
+stopsignal=KILL
+stopasgroup=true
+killasgroup=true
+startretries=3
+stderr_logfile=/var/log/supervisor/fms_frontend.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_frontend.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug

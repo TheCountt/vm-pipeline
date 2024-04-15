@@ -1,0 +1,17 @@
+---
+# tasks file for webserver
+
+- import_tasks: dependencies.yml
+
+- name: Change ownership of folder
+  file:
+    path: /var/www
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '775'
+    recurse: yes
+    state: directory
+
+- import_tasks: nfs-client.yml
+
+- import_tasks: process-manager.yml

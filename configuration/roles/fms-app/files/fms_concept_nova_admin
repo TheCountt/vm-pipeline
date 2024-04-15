@@ -1,0 +1,17 @@
+[program:fms_concept_nova_admin]
+command=pm2 start npm --name fms-concept-nova-admin -- run start -- -p 8057
+directory=/var/www/fms-concept-nova-admin
+autostart=true
+autorestart=true
+user=ubuntu
+stderr_logfile=/var/log/supervisor/fms_concept_nova_admin.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_concept_nova_admin.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug
+

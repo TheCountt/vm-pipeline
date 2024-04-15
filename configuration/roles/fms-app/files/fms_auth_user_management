@@ -1,0 +1,15 @@
+[program:fms_auth_user_management]
+command=php -S 127.0.0.1:8051 -t /var/www/fms-auth-user-management/public/
+autostart=true
+autorestart=true
+user=ubuntu
+stderr_logfile=/var/log/supervisor/fms_auth_user_management.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_auth_user_management.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug

@@ -1,0 +1,85 @@
+pipeline {
+  agent any
+
+  environment {
+      ANSIBLE_CONFIG="${WORKSPACE}/ansible.cfg"
+    }
+
+  options {
+    timestamps()
+    buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
+  }
+
+  triggers {
+    cron('H */4 * * *') // Build every 4 hours to keep services up e.g sonarqube
+    }
+
+  stages{
+      stage("Initial cleanup") {
+          steps {
+            dir("${WORKSPACE}") {
+              deleteDir()
+            }
+          }
+        }
+
+      stage('Checkout SCM') {
+         steps{
+            git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/cncgrbteam/bastion-cd-pipeline.git'
+          }
+       }
+
+      stage('Prepare Ansible For Execution') {
+         steps {
+           sh 'echo ${WORKSPACE}' 
+           sh 'sed -i "4 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/ansible.cfg'  
+         }
+       }
+
+      //  DELETE/COMMENT OUT THIS STAGE TO RUN DYNAMIC INVENTORY
+      stage('User Input - for Static Inventory') {
+            steps {
+                script {
+                    try {
+                        timeout(time: 3, unit: 'MINUTES') {
+                            def userInput = input(
+                                message: 'Choose environment',
+                                parameters: [
+                                    choice(choices: ['bastion.yml', 'dev.yml'], description: 'Selecting Environment', name: 'InventoryFile'),
+                                    choice(choices: ['bastion-playbook.yml', 'dev-playbook.yml'], description: 'Selecting Playbook File', name: 'Playbooks')
+                                ]
+                            )
+                            env.InventoryFile = userInput.InventoryFile
+                            env.Playbooks = userInput.Playbooks
+                        }
+                    } catch (err) {
+                        echo "User input stage timed out. Using default parameters."
+                        env.InventoryFile = 'bastion.yml'
+                        env.Playbooks = 'bastion-playbook.yml'
+                    }
+                }
+            }
+        }
+
+        // DELETE/COMMENT OUT THIS STAGE TO RUN DYNAMIC INVENTORY
+      stage('Execute Ansible playbook - for Static Inventory') {
+        steps {
+          ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: "inventory/${InventoryFile}", playbook: "playbooks/${Playbooks}", vaultCredentialsId: 'ansible-vault-password'
+          }
+        }
+
+        // UNCOMMENT THIS STAGE TO RUN DYNAMIC INVENTORY 
+      // stage('Execute Ansible playbook - for Dynamic Inventory') {
+      //   steps {
+      //      ansiblePlaybook colorized: true, credentialsId: 'aws-keypair', disableHostKeyChecking: true, installation: 'ansible', inventory: "inventory/aws_ec2.yml", playbook: "playbooks/playbook.yml", vaultCredentialsId: 'ansible-vault-password'
+      //     }
+      //   }
+
+
+      stage('Clean Workspace after build'){
+        steps{
+          cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
+         }
+       }
+   }
+}

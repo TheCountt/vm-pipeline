@@ -1,0 +1,8 @@
+[program:fms_api_gateway]
+command=php -S 127.0.0.1:8050 -t /var/www/fms-api-gateway/public/
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/services/fms_api_gateway.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/services/fms_api_gateway.out.log
+stdout_logfile_maxbytes=50MB

@@ -1,0 +1,15 @@
+[program:fms_notification_service]
+command=php -S 127.0.0.1:8052 -t /var/www/fms-notification-service/public/
+autostart=true
+autorestart=true
+user=ubuntu
+stderr_logfile=/var/log/supervisor/fms_notification_service.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_notification_service.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug

@@ -1,0 +1,6 @@
+[program:fms_auth_user_management]
+command=php -S 127.0.0.1:8051 -t /var/www/fms-auth-user-management/public/
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/fms_auth_user_management.err.log
+stdout_logfile=/var/log/fms_auth_user_management.out.log

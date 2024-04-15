@@ -1,0 +1,41 @@
+---
+- name: Check if Supervisor is installed
+  command: supervisord --version
+  register: supervisord_version
+  ignore_errors: yes
+  changed_when: false
+
+- name: Install Supervisor if not installed
+  ansible.builtin.apt:
+    name: supervisor
+    update_cache: true
+    force_apt_get: yes
+    state: present
+  when: supervisord_version.rc != 0
+
+- name: Ensure Supervisor service is started
+  service:
+    name: supervisor
+    state: started
+
+# ###############################################################################
+
+- name: Create Supervisor configuration file
+  ansible.builtin.copy:
+    src: "files/{{ item }}"
+    dest: "/etc/supervisor/conf.d/{{ item }}.conf"
+  loop: "{{ programs }}"
+
+- name: Reread and/or add programs(if it does not exist)
+  supervisorctl:
+    name: "{{ item }}"
+    state: present
+  loop : "{{ programs }}"
+  notify: Restart Supervisord
+
+- name: Restart all programs and program groups
+  supervisorctl:
+    name: "{{ item }}"
+    state: restarted
+  loop: "{{ programs }}"
+

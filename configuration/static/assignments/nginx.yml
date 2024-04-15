@@ -1,0 +1,9 @@
+---
+- hosts: loadbalancer
+  become: true
+  environment: 
+    HOME: /home/thecountt
+    USER: thecountt
+  tags: nginx
+  roles:
+    - nginx

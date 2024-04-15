@@ -1,0 +1,11 @@
+---
+- name: nginx assignment
+  import_playbook: ../static-assignments/nginx.yml
+
+- hosts: tag_Name_ACS_app_server
+- name: app-server assignment
+  import_playbook: ../static-assignments/app-server.yml 
+
+- hosts: tag_Name_ACS_nginx
+- name: nginx assignment
+  import_playbook: ../static-assignments/nginx.yml

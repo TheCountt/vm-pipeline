@@ -1,0 +1,28 @@
+- name: install python3 packages and net-tools
+  ansible.builtin.apt:
+    name: 
+      - net-tools
+      - python3
+      - python3-pip
+      - python3-dev
+      - libpq-dev
+    update_cache: true
+    state: present
+
+- name: Install setuptools
+  pip:
+    name: setuptools
+    extra_args: --upgrade
+
+- name: upgrade pip command
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+
+- name: install pip dependencies
+  pip:
+    name:  
+      - botocore
+      - boto3
+    executable: pip3

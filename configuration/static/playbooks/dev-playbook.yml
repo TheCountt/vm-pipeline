@@ -1,0 +1,8 @@
+- name: nfs assignment
+  import_playbook: ../vm-pipeline/assignments/nfs.yml
+
+- name: fms assignment
+  import_playbook: ../vm-pipeline/assignments/fms.yml
+  
+- name: nginx assignment
+  import_playbook: ../vm-pipeline/assignments/nginx.yml

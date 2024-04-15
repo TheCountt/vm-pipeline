@@ -1,0 +1,21 @@
+---
+# WEBSERVER_IP_ADDRESS: {{ ansible_eth0.ipv4.address[-1] }}
+path_export: /var/www
+client_shared_dir: /var/www
+user_name: ubuntu
+nfs_server: 172.31.42.177
+programs:
+    - fms_fuel_service
+    - fms_frontend
+    - fms_vehicle_service
+    - fms_api_gateway
+    - fms_auth_user_management
+    - fms_notification_service
+    - fms_payment_service
+    # - fms_concept_nova_admin
+     
+
+
+# process_file:
+#     - process.php
+#     - ecosystem.config.js

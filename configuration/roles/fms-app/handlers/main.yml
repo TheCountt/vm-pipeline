@@ -1,0 +1,8 @@
+---
+# - name: Restart Supervisor processes
+#   command: supervisorctl restart all
+
+- name: Restart Supervisord
+  service: 
+    name: supervisor
+    state: restarted

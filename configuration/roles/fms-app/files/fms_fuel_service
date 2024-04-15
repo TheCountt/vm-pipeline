@@ -1,0 +1,15 @@
+[program:fms_fuel_service]
+command=php -S 127.0.0.1:8054 -t /var/www/fms-fuel-service/public/
+user=ubuntu
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/supervisor/fms_fuel_service.err.log
+stderr_logfile_maxbytes=50MB
+stdout_logfile=/var/log/supervisor/fms_fuel_service.out.log
+stdout_logfile_maxbytes=50MB
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock
+
+[supervisord]
+loglevel=debug

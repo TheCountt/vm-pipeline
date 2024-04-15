@@ -1,0 +1,18 @@
+---
+all:
+ children:
+   nfs:
+     hosts:
+      172.31.42.177:
+        ansible_user: ubuntu
+   fms-app:
+     hosts:
+      172.31.33.68:
+        ansible_user: ubuntu
+      172.31.36.251:
+        ansible_user: ubuntu
+   loadbalancer:
+     hosts:
+      172.31.43.45:
+        ansible_user: ubuntu
+   ungrouped: {}

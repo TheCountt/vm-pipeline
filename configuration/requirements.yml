@@ -1,0 +1,17 @@
+---
+collections:
+  - name: community.postgresql
+    type: galaxy
+
+  - name: community.docker
+    type: galaxy
+
+  - name: community.mongodb
+    type: galaxy
+
+  - name: community.general
+    type: galaxy
+
+  - name: community.aws
+    type: galaxy
+    

@@ -1,0 +1,166 @@
+---
+## Install NVM & Setup Node
+- name: Setup Node
+  become_flags: -i # Execute config files such as .profile (Ansible uses non-interactive login shells)
+  block:
+    - name: Install node version manager
+      shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+      args:
+        executable: /bin/bash
+        chdir: "$HOME"
+        creates: "$HOME/.nvm/nvm.sh"
+
+    - name: Setup .profile
+      lineinfile:
+        path: $HOME/.profile
+        line: source $HOME/.nvm/nvm.sh # This will make sure Node is on the user's PATH
+        create: yes
+    
+    - name: Install node
+      shell: |
+       source $HOME/.nvm/nvm.sh && nvm install {{item}}
+      args:
+        executable: /bin/bash
+        chdir: "$HOME"
+        creates: "$HOME/.nvm/versions/node/v{{item}}"
+      loop:
+        - 18.17.0
+
+    - name: Set preferred node version to be default
+      shell: |
+        source $HOME/.nvm/nvm.sh && nvm use 18.17.0 && nvm alias default 18.17.0
+      args:
+        executable: /bin/bash
+
+
+
+# ### INSTALL NODEJS USING APT TOO
+
+- name: download nodejs keys
+  apt_key: 
+   url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+   state: present
+
+
+- name: add nodejs apt repositories
+  apt_repository: 
+   repo: "deb https://deb.nodesource.com/node_16.x {{ ansible_distribution_release }} main"
+   state: present
+
+- name: Update ubuntu
+  ansible.builtin.apt:
+   update_cache: yes
+
+- name: install nodejs
+  ansible.builtin.apt: 
+   name: nodejs
+   state: present
+   update_cache: yes
+   force_apt_get: yes
+
+## Install necessary dependencies globally using npm
+- name: Install dependencies
+  shell: |
+    source $HOME/.nvm/nvm.sh && npm install dotenv pm2@latest joi mongoose -g
+  args:
+   executable: /bin/bash
+   chdir: "$HOME"
+   creates: $HOME/module
+
+# - name: install python3 packages and net-tools
+#   ansible.builtin.apt:
+#     name: 
+#       - net-tools
+#       - python3
+#       - python3-pip
+#       - python3-dev
+#       - libpq-dev
+#     update_cache: true
+#     state: present
+
+# - name: Install setuptools
+#   pip:
+#     name: setuptools
+#     extra_args: --upgrade
+
+# - name: upgrade pip command
+#   pip:
+#     name: pip
+#     extra_args: --upgrade
+
+
+# - name: install pip dependencies
+#   pip:
+#     name:  
+#       - botocore
+#       - boto3
+#     executable: pip3
+
+
+##  Install and configure Neccessary packages, libraries & extensions
+
+- name: Add PHP repository for PHP 8.2 (Ubuntu/Debian)
+  apt_repository:
+    repo: ppa:ondrej/php
+      
+- name: Install unzip, php and its extensions
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+    force_apt_get: yes
+    state: present
+  loop:
+      - unzip
+      - php8.2
+      - php8.2-cli
+      - php8.2-fpm
+      - php8.2-mysql
+      - php8.2-curl
+      - php8.2-gd
+      - php8.2-mbstring
+      - php8.2-xml
+      - php8.2-zip  
+
+- name: Download Composer installer
+  ansible.builtin.get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-installer.php
+
+- name: Run Composer installer
+  shell: |
+    php /tmp/composer-installer.php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+
+
+- name: Add an Apt signing key for MongoDB
+  ansible.builtin.apt_key:
+    url: https://pgp.mongodb.com/server-7.0.asc
+    state: present
+
+- name: Create List file for MongoDB
+  shell: |
+   echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+  args:
+   chdir: "$HOME"
+   creates: $HOME/filemongodb
+
+- name: Install Database clients
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+    force_apt_get: yes
+    state: present
+  loop:
+      - "mongodb-org"
+      - "mysql-server"
+
+- name: Enable the database services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - "mongod"
+    - "mysql"

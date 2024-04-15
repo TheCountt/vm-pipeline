@@ -1,0 +1,45 @@
+---
+- name: Update ubuntu
+  ansible.builtin.apt:
+   update_cache: yes
+
+# tasks file for nginx
+- name: install nginx as a webserver
+  ansible.builtin.apt:
+    name: "nginx"
+    state: present
+
+- name: ensure nginx is started and enabled
+  ansible.builtin.service:
+     name: nginx 
+     state: started 
+     enabled: yes
+
+    
+- name: copy nginx config file
+  ansible.builtin.copy:
+    src: files/nginx.conf
+    dest: /etc/nginx/nginx.conf 
+    follow: yes
+  notify: Restart nginx
+
+- name: Remove default Nginx site configuration
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart nginx
+
+- name: Create Nginx site configuration
+  ansible.builtin.copy:
+    src: files/{{ conf_file }}
+    dest: /etc/nginx/sites-available/{{ conf_file }}
+  loop: "{{ conf_file }}"
+  notify: Restart nginx
+
+- name: Enable Nginx site configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ conf_file }}
+    dest: /etc/nginx/sites-enabled/{{ conf_file }}
+    state: link
+  loop: "{{ conf_file }}"
+  notify: Restart nginx

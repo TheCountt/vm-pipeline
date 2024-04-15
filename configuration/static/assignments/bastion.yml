@@ -1,0 +1,10 @@
+---
+- hosts: bastion
+  become: true
+  environment: 
+    HOME: /home/thecountt
+    USER: thecountt
+  tags: bastion
+  roles:
+    - bastion
+    - sonarqube 

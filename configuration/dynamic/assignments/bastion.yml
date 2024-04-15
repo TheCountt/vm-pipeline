@@ -1,0 +1,10 @@
+---
+- hosts: tag_Name_ACS_bastion
+  become: true
+  environment: 
+    HOME: /home/ubuntu
+    USER: ubuntu
+  tags: ACS-bastion
+  roles:
+    - bastion
+    - sonarqube 

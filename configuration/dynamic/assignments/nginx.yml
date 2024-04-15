@@ -1,0 +1,9 @@
+---
+- hosts: tag_Name_ACS_nginx_m
+  become: true
+  environment: 
+    HOME: /home/ubuntu
+    USER: ubuntu
+  tags: nginx
+  roles:
+    - nginx

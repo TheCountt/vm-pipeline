@@ -1,0 +1,17 @@
+---
+# vars file for nfs
+path_export: /var/www
+subnet_cidr: "172.31.32.0/20"
+user_name: ubuntu
+aws_access_key: "AKIAX4VNS65ZRGCOWD77"
+aws_secret_key: "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"
+s3_bucket: fms-artifacts
+s3_objects:
+    - { src: fms-fuel-service.zip, dest: fms-fuel-service }
+    - { src: fms-frontend.zip, dest: fms-frontend }
+    - { src: fms-vehicle-service.zip, dest: fms-vehicle-service }
+    - { src: fms-api-gateway.zip, dest: fms-api-gateway }
+    - { src: fms-auth-user-management.zip, dest: fms-auth-user-management }
+    - { src: fms-notification-service.zip, dest: fms-notification-service }
+    - { src: fms-payment-service.zip, dest: fms-payment-service }
+    # - { src: fms-concept-nova-admin.zip, dest: fms-concept-nova-admin }

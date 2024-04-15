@@ -1,0 +1,13 @@
+---
+- name: Restart jenkins server
+  systemd: 
+    name: jenkins
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+# handlers file for nginx
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted
