@@ -1,0 +1,93 @@
+---
+## Install Pyenv & Setup Python
+- name: Update ubuntu
+  ansible.builtin.apt:
+   update_cache: yes
+
+- name: Setup Python
+  become_flags: -i # Execute config files such as .profile (Ansible uses non-interactive login shells)
+  block:
+    - name: Install prerequisites
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - make
+        - build-essential
+        - libssl-dev
+        - zlib1g-dev
+        - libbz2-dev
+        - libreadline-dev
+        - libsqlite3-dev
+        - wget
+        - curl
+        - llvm
+        - libncurses5-dev
+        - libncursesw5-dev
+        - xz-utils
+        - tk-dev
+        - libffi-dev
+        - liblzma-dev
+        - python-openssl
+
+    - name: Install Pyenv(python version manager)
+      shell: "curl https://pyenv.run | bash"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
+      args:
+        creates: ~/.pyenv
+
+
+    - name: Configure Pyenv
+      lineinfile:
+        dest: "{{ item }}"
+        line: "{{ pyenv_config_line }}"
+      vars:
+        pyenv_config_line: >
+            {%- if item == '~/.bashrc' %}
+            {{ 'eval "$(pyenv init --path)" && eval "$(pyenv virtualenv-init -)"' }}
+            {%- elif item == '~/.profile' %}
+            export PATH="$HOME/.pyenv/bin:$PATH"
+            eval "$(pyenv init --path)"
+            eval "$(pyenv virtualenv-init -)"
+            {%- else %}
+            {%- endif %}
+      loop:
+        - ~/.bashrc
+        - ~/.profile
+
+
+    - name: Install Python
+      shell: |
+        ~/.pyenv/bin/pyenv install 3.12.0
+        ~/.pyenv/bin/pyenv global 3.12.0
+      environment:
+        PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
+
+
+- name: Verify Python version
+  command: python3 --version
+  register: python3_version
+
+- name: Display Python version
+  debug:
+    var: python3_version.stdout_lines
+
+
+- name: Install Python packages using pip(a package manager for python)
+  block:
+    - name: Install/update packages
+      pip:
+        name: "{{ item }}"
+        extra_args: "--upgrade"
+      loop:
+        - setuptools
+        - pip
+        - wheel
+
+    - name: install botocore & boto3
+      pip:
+        name:  
+        - botocore
+        - boto3

@@ -59,38 +59,38 @@
   notify: Restart jenkins server
 
 
-#  install php and its extensions
-- name: Add PHP repository for PHP 8.2 (Ubuntu/Debian)
-  apt_repository:
-    repo: ppa:ondrej/php
+# #  install php and its extensions
+# - name: Add PHP repository for PHP 8.2 (Ubuntu/Debian)
+#   apt_repository:
+#     repo: ppa:ondrej/php
       
-- name: Install  php and its extensions
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    update_cache: true
-    force_apt_get: yes
-    state: present
-  loop:
-      - php8.2
-      - php8.2-cli
-      - php8.2-fpm
-      - php8.2-mysql
-      - php8.2-curl
-      - php8.2-gd
-      - php8.2-mbstring
-      - php8.2-xml
-      - php8.2-zip 
+# - name: Install  php and its extensions
+#   ansible.builtin.apt:
+#     name: "{{ item }}"
+#     update_cache: true
+#     force_apt_get: yes
+#     state: present
+#   loop:
+#       - php8.2
+#       - php8.2-cli
+#       - php8.2-fpm
+#       - php8.2-mysql
+#       - php8.2-curl
+#       - php8.2-gd
+#       - php8.2-mbstring
+#       - php8.2-xml
+#       - php8.2-zip 
 
-- name: Download Composer installer
-  ansible.builtin.get_url:
-    url: https://getcomposer.org/installer
-    dest: /tmp/composer-installer.php
+# - name: Download Composer installer
+#   ansible.builtin.get_url:
+#     url: https://getcomposer.org/installer
+#     dest: /tmp/composer-installer.php
 
-- name: Run Composer installer
-  shell: |
-    php /tmp/composer-installer.php -- --install-dir=/usr/local/bin --filename=composer
-  args:
-    creates: /usr/local/bin/composer
+# - name: Run Composer installer
+#   shell: |
+#     php /tmp/composer-installer.php -- --install-dir=/usr/local/bin --filename=composer
+#   args:
+#     creates: /usr/local/bin/composer
 
 
 - name: install python3 packages
@@ -114,7 +114,7 @@
     extra_args: --upgrade
 
 
-- name: install pip dependencies
+- name: install boto3 & botocore
   pip:
     name:  
       - botocore

@@ -25,7 +25,7 @@ pipeline {
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/cncgrbteam/bastion-cd-pipeline.git'
+            git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/TheCountt/vm-pipeline.git'
           }
        }
 
@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-        // DELETE/COMMENT OUT THIS STAGE TO RUN DYNAMIC INVENTORY
+        // COMMENT OUT THIS STAGE TO RUN DYNAMIC INVENTORY
       stage('Execute Ansible playbook - for Static Inventory') {
         steps {
           ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: "inventory/${InventoryFile}", playbook: "playbooks/${Playbooks}", vaultCredentialsId: 'ansible-vault-password'

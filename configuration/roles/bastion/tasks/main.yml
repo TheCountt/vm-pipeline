@@ -1,22 +1,25 @@
 ---
-# - name: install jenkins on debian OS
-#   include_tasks: debian.yml
-#   when: ansible_os_family == 'Debian'
+- name: install jenkins on debian OS
+  include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
 
 # - name: install jenkins on redhat OS
 #   include_tasks: redhat.yml
 #   when: ansible_os_family == 'Redhat'
 
 - import_tasks: nvm.yml
+- import_tasks: phpenv.yml
+- import_tasks: pyenv.yml
+- import_tasks: db-client.yml
 
 # Community modules needed
-# - name: Install needed community modules
-#   community.general.ansible_galaxy_install:
-#     type: collection
-#     requirements_file: $HOME/ci-cd-pipeline/requirements.yml
-# - name: Install needed community modules
-#   shell: >
-#      ansible-galaxy collection install -r ./ci-cd-pipeline/requirements.yml
+- name: Install needed community modules
+  community.general.ansible_galaxy_install:
+    type: collection
+    requirements_file: $HOME/ci-cd-pipeline/requirements.yml
+- name: Install needed community modules
+  shell: >
+     ansible-galaxy collection install -r ./ci-cd-pipeline/requirements.yml
 
 
 # docker configuration for non-root user
@@ -60,7 +63,7 @@
 #     state: present
 
 
-# - import_tasks: nginx.yml
+- import_tasks: nginx.yml
 
 # - name: Clone GitHub repositories
 #   ansible.builtin.git:

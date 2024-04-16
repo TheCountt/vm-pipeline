@@ -60,8 +60,8 @@
    update_cache: yes
 
 - name: Set default Node.js version
-  command: update-alternatives --install /usr/bin/node node /usr/bin/nodejs 18
-  ignore_errors: yes
+  command: sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 18
+  ignore_errors: true
 
 - name: Verify Node.js version
   command: node --version

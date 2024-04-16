@@ -1,0 +1,31 @@
+
+- name: Add an Apt signing key for MongoDB
+  ansible.builtin.apt_key:
+    url: https://pgp.mongodb.com/server-7.0.asc
+    state: present
+
+- name: Create List file for MongoDB
+  shell: |
+   echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+  args:
+   chdir: "$HOME"
+   creates: $HOME/filemongodb
+
+- name: Install Database clients
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+    force_apt_get: yes
+    state: present
+  loop:
+      - "mongodb-org"
+      - "mysql-server"
+
+- name: Enable the database services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - "mongod"
+    - "mysql"
