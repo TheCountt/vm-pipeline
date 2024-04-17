@@ -1,3 +1,8 @@
+- name: Ensure group sonar exists
+  ansible.builtin.group:
+    name: sonar
+    state: present
+
 - name: install necessary packages
   ansible.builtin.apt:
     name:
@@ -80,3 +85,15 @@
     src: templates/sonarqube.service.j2
     dest:  /etc/systemd/system/sonar.service
     force: yes
+
+- name: re-execute sonarqube server daemon
+  systemd:
+    daemon_reload: yes
+    #daemon_reexec: yes
+
+- name: start and enable sonarqube
+  ansible.builtin.service:
+    name: sonar
+    state: started
+    enabled: yes
+  notify: Reload Sonarqube server daemon

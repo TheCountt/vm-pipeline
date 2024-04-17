@@ -1,0 +1,27 @@
+# tasks file for sonarqube
+- name: set max_map
+  command: sysctl -w vm.max_map_count=524288
+
+- name: set file max
+  command: sysctl -w fs.file-max=131072
+
+ 
+- name: Add max limits
+  ansible.builtin.lineinfile:
+    path: /etc/security/limits.conf
+    line: 
+      - sonarqube   -   nofile   131072
+      - sonarqube   -   nproc    8192
+    create: yes
+
+- name: Add ppa  repository 
+  ansible.builtin.apt_repository:
+    repo: ppa:linuxuprising/java
+
+- name: install java 17
+  ansible.builtin.apt:
+    name: 
+      - openjdk-17-jdk
+      - openjdk-17-jre
+    state: present
+    allow_unauthenticated: yes
