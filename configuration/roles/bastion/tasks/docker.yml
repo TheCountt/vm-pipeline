@@ -1,0 +1,39 @@
+# docker configuration for non-root user
+- name: Create group "docker"
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+
+- name: Add user to group 'docker'
+  ansible.builtin.user:
+    name: jenkins
+    comment: Name of user to add to group docker
+    group: docker
+
+
+- name: Change file ownership, group and permissions
+  ansible.builtin.file:
+    path: ./.docker
+    owner: jenkins
+    group: jenkins
+    recurse: yes
+    mode: '0666'
+
+- name: Change file ownership, group and permissions
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    mode: '0666'
+
+- name: Start docker
+  become: true
+  ansible.builtin.systemd: 
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Downloading and installing grype for scanning
+  ansible.builtin.apt:
+    deb: "{{ grype_debian_url }}"
+    state: present

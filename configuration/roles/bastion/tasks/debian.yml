@@ -58,96 +58,30 @@
    daemon_reload: yes
   notify: Restart jenkins server
 
-
-# #  install php and its extensions
-# - name: Add PHP repository for PHP 8.2 (Ubuntu/Debian)
-#   apt_repository:
-#     repo: ppa:ondrej/php
-      
-# - name: Install  php and its extensions
+# - name: install python3 packages
 #   ansible.builtin.apt:
-#     name: "{{ item }}"
+#     name: 
+#       - python3
+#       - python3-pip
+#       - python3-dev
+#       - libpq-dev
 #     update_cache: true
-#     force_apt_get: yes
-#     state: present
-#   loop:
-#       - php8.2
-#       - php8.2-cli
-#       - php8.2-fpm
-#       - php8.2-mysql
-#       - php8.2-curl
-#       - php8.2-gd
-#       - php8.2-mbstring
-#       - php8.2-xml
-#       - php8.2-zip 
-
-# - name: Download Composer installer
-#   ansible.builtin.get_url:
-#     url: https://getcomposer.org/installer
-#     dest: /tmp/composer-installer.php
-
-# - name: Run Composer installer
-#   shell: |
-#     php /tmp/composer-installer.php -- --install-dir=/usr/local/bin --filename=composer
-#   args:
-#     creates: /usr/local/bin/composer
-
-
-- name: install python3 packages
-  ansible.builtin.apt:
-    name: 
-      - python3
-      - python3-pip
-      - python3-dev
-      - libpq-dev
-    update_cache: true
-    state: present
-
-- name: Install setuptools
-  pip:
-    name: setuptools
-    extra_args: --upgrade
-
-- name: upgrade pip command
-  pip:
-    name: pip
-    extra_args: --upgrade
-
-
-- name: install boto3 & botocore
-  pip:
-    name:  
-      - botocore
-      - boto3
-    executable: pip3
-
-# - name: Add an Apt signing key for MongoDB
-#   ansible.builtin.apt_key:
-#     url: https://pgp.mongodb.com/server-7.0.asc
 #     state: present
 
-# - name: Create List file for MongoDB
-#   shell: |
-#    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-#   args:
-#    chdir: "$HOME"
-#    creates: $HOME/filemongodb
+# - name: Install setuptools
+#   pip:
+#     name: setuptools
+#     extra_args: --upgrade
 
-# - name: Install Database clients
-#   ansible.builtin.apt:
-#     name: "{{ item }}"
-#     update_cache: true
-#     force_apt_get: yes
-#     state: present
-#   loop:
-#       - "mongodb-org"
-#       - "mysql-server"
+# - name: upgrade pip command
+#   pip:
+#     name: pip
+#     extra_args: --upgrade
 
-# - name: Enable the database services
-#   ansible.builtin.service:
-#     name: "{{ item }}"
-#     enabled: yes
-#     state: started
-#   loop:
-#     - "mongod"
-#     - "mysql"
+
+# - name: install boto3 & botocore
+#   pip:
+#     name:  
+#       - botocore
+#       - boto3
+#     executable: pip3

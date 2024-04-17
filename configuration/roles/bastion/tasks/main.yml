@@ -1,73 +1,32 @@
 ---
-- name: install jenkins on debian OS
+# Debian OS
+- name: Install all necessary packages and tools on Debian OS
   include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
-# - name: install jenkins on redhat OS
+- include_tasks: nvm.yml
+  when: ansible_os_family == 'Debian'
+
+# - include_tasks: phpenv.yml
+#   when: ansible_os_family == 'Debian'
+
+- include_tasks: pyenv.yml
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: db-client.yml
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: modules.yml
+  when: ansible_os_family == 'Debian'
+
+# - include_tasks: docker.yml
+#   when: ansible_os_family == 'Debian'
+
+- include_tasks: nginx.yml
+  when: ansible_os_family == 'Debian'
+
+
+# Redhat OS
+# - name: Install all necessary packages and tools on redhat OS
 #   include_tasks: redhat.yml
 #   when: ansible_os_family == 'Redhat'
-
-- import_tasks: nvm.yml
-- import_tasks: phpenv.yml
-- import_tasks: pyenv.yml
-- import_tasks: db-client.yml
-
-# Community modules needed
-- name: Install needed community modules
-  community.general.ansible_galaxy_install:
-    type: collection
-    requirements_file: $HOME/ci-cd-pipeline/requirements.yml
-- name: Install needed community modules
-  shell: >
-     ansible-galaxy collection install -r ./ci-cd-pipeline/requirements.yml
-
-
-# docker configuration for non-root user
-# - name: Create group "docker"
-#   ansible.builtin.group:
-#     name: docker
-#     state: present
-
-
-# - name: Add user to group 'docker'
-#   ansible.builtin.user:
-#     name: jenkins
-#     comment: Name of user to add to group docker
-#     group: docker
-
-
-# - name: Change file ownership, group and permissions
-#   ansible.builtin.file:
-#     path: ./.docker
-#     owner: jenkins
-#     group: jenkins
-#     recurse: yes
-#     mode: '0666'
-
-# - name: Change file ownership, group and permissions
-#   ansible.builtin.file:
-#     path: /var/run/docker.sock
-#     mode: '0666'
-
-# - name: Start docker
-#   become: true
-#   ansible.builtin.systemd: 
-#     name: docker
-#     state: restarted
-#     enabled: yes
-#     daemon_reload: yes
-
-# - name: Downloading and installing grype for scanning
-#   ansible.builtin.apt:
-#     deb: "{{ grype_debian_url }}"
-#     state: present
-
-
-- import_tasks: nginx.yml
-
-# - name: Clone GitHub repositories
-#   ansible.builtin.git:
-#     repo: "{{ item.url }}"
-#     dest: "{{ item.dest }}"
-#     version: main
-#   loop: "{{ github_repositories }}"

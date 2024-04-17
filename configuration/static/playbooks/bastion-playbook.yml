@@ -1,2 +1,2 @@
 - name: bastion assignment
-  import_playbook: ../assignments/bastion.yml
+  import_playbook: .../static/assignments/bastion.yml

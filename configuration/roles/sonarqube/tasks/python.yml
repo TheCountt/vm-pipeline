@@ -1,0 +1,28 @@
+#  Install python and its packages for Ansible hosts to work properly in CI/CD pipeline 
+
+# - name: install python3
+#   ansible.builtin.apt:
+#     name: 
+#       - python3
+#       - python3-pip
+#       - python3-dev
+#       - libpq-dev
+#     state: present
+
+- name: Install Python packages using pip(a package manager for python)
+  block:
+    - name: Install/update packages
+      pip:
+        name: "{{ item }}"
+        extra_args: "--upgrade"
+      loop:
+        - setuptools
+        - pip
+        - wheel
+        - psycopg2
+
+
+# - name: install pip dependencies
+#   pip:
+#     name:  psycopg2
+#     executable: pip3

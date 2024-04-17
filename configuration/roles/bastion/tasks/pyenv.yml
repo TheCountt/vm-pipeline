@@ -38,7 +38,6 @@
       args:
         creates: ~/.pyenv
 
-
     - name: Configure Pyenv
       lineinfile:
         dest: "{{ item }}"
@@ -56,6 +55,7 @@
       loop:
         - ~/.bashrc
         - ~/.profile
+      when: not pyenv_initialized.stdout | default('') | regex_search('pyenv init')
 
 
     - name: Install Python
@@ -64,6 +64,7 @@
         ~/.pyenv/bin/pyenv global 3.12.0
       environment:
         PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
+      when: not pyenv_initialized.stdout | default('') | regex_search('3.12.0')
 
 
 - name: Verify Python version

@@ -1,0 +1,8 @@
+# Community modules needed
+- name: Install needed community modules
+  community.general.ansible_galaxy_install:
+    type: collection
+    requirements_file: $HOME/vm-pipeline/configuration/requirements.yml
+- name: Install needed community modules
+  shell: >
+     ansible-galaxy collection install -r .../requirements.yml

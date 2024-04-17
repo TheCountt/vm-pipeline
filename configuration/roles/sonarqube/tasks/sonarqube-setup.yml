@@ -6,7 +6,7 @@
 
 - name: download the zip file
   ansible.builtin.get_url:
-    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.9.56886.zip
+    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.4.87374.zip
     dest: /opt/
     mode: 0755
     timeout: 300
@@ -19,20 +19,20 @@
 
 - name: Extract the zip file
   ansible.builtin.unarchive:
-    src: /opt/sonarqube-8.9.9.56886.zip
+    src: sonarqube-9.9.4.87374.zip
     dest: /opt/
     remote_src: yes
 
 - name: Copy /opt/sonarqube/
   ansible.builtin.copy:
-    src: /opt/sonarqube-8.9.9.56886/
+    src: /opt/sonarqube-9.9.4.87374
     dest: /opt/sonarqube/
     remote_src: yes
     follow: yes
 
 - name: remove the zip file
   ansible.builtin.file:
-    path: /opt/sonarqube-8.9.9.56886.zip
+    path: /opt/sonarqube-9.9.4.87374.zip
     state: absent
 
 # - name: add user to run sonar
