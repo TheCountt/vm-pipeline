@@ -4,17 +4,17 @@
   include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
+- include_tasks: pyenv.yml
+  when: ansible_os_family == 'Debian'
+
 - include_tasks: nvm.yml
   when: ansible_os_family == 'Debian'
 
 # - include_tasks: phpenv.yml
 #   when: ansible_os_family == 'Debian'
 
-- include_tasks: pyenv.yml
-  when: ansible_os_family == 'Debian'
-
-- include_tasks: db-client.yml
-  when: ansible_os_family == 'Debian'
+# - include_tasks: db-client.yml
+#   when: ansible_os_family == 'Debian'
 
 - include_tasks: modules.yml
   when: ansible_os_family == 'Debian'
@@ -27,6 +27,6 @@
 
 
 # Redhat OS
-# - name: Install all necessary packages and tools on redhat OS
+# - name: Install all necessary packages and tools on Redhat OS
 #   include_tasks: redhat.yml
 #   when: ansible_os_family == 'Redhat'
