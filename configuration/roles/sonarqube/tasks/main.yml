@@ -4,13 +4,16 @@
   include_tasks: req.yml
   when: ansible_os_family == 'Debian'
 
-- include_tasks: postgresql.yml
+- name: install needed python packages
+  include_tasks: python.yml
   when: ansible_os_family == 'Debian'
 
-- include_tasks: python.yml
+- name: postgresql set up for sonarqube
+  include_tasks: postgresql.yml
   when: ansible_os_family == 'Debian'
 
-- include_tasks: sonarqube-setup.yml.yml
+- name: sonarqube setup
+  include_tasks: sonarqube-setup.yml
   when: ansible_os_family == 'Debian'
 
 

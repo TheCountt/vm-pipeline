@@ -1,10 +1,10 @@
 ---
-- hosts: bastion
+- hosts: localhost
   become: true
   environment: 
     HOME: /home/thecountt
     USER: thecountt
-  tags: bastion
+  tags: local
   roles:
     - bastion
     - sonarqube 

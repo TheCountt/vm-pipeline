@@ -1,8 +1,8 @@
-- name: nfs assignment
-  import_playbook: .../static/assignments/nfs.yml
+# - name: nfs assignment
+#   import_playbook: .../static/assignments/nfs.yml
 
-- name: fms assignment
-  import_playbook: .../static/assignments/fms.yml
+# - name: fms assignment
+#   import_playbook: .../static/assignments/fms.yml
   
-- name: nginx assignment
-  import_playbook: .../static/assignments/nginx.yml
+# - name: nginx assignment
+#   import_playbook: .../static/assignments/nginx.yml

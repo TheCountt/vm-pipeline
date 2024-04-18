@@ -31,50 +31,59 @@
         - liblzma-dev
         - python-openssl
 
-    - name: Install Pyenv(python version manager)
-      shell: "curl https://pyenv.run | bash"
-      environment:
-        PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
-      args:
-        creates: ~/.pyenv
+#     - name: Install Pyenv(python version manager)
+#       shell: "curl https://pyenv.run | bash"
+#       environment:
+#         PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
+#       args:
+#         creates: ~/.pyenv
 
-    - name: Configure Pyenv
-      lineinfile:
-        dest: "{{ item }}"
-        line: "{{ pyenv_config_line }}"
-      vars:
-        pyenv_config_line: >
-            {%- if item == '~/.bashrc' %}
-            {{ 'eval "$(pyenv init --path)" && eval "$(pyenv virtualenv-init -)"' }}
-            {%- elif item == '~/.profile' %}
-            export PATH="$HOME/.pyenv/bin:$PATH"
-            eval "$(pyenv init --path)"
-            eval "$(pyenv virtualenv-init -)"
-            {%- else %}
-            {%- endif %}
-      loop:
-        - ~/.bashrc
-        - ~/.profile
-      when: not pyenv_initialized.stdout | default('') | regex_search('pyenv init')
-
-
-    - name: Install Python
-      shell: |
-        ~/.pyenv/bin/pyenv install 3.12.0
-        ~/.pyenv/bin/pyenv global 3.12.0
-      environment:
-        PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
-      when: not pyenv_initialized.stdout | default('') | regex_search('3.12.0')
+#     - name: Configure Pyenv
+#       lineinfile:
+#         dest: "{{ item }}"
+#         line: "{{ pyenv_config_line }}"
+#       vars:
+#         pyenv_config_line: >
+#             {%- if item == '~/.bashrc' %}
+#             {{ 'eval "$(pyenv init --path)" && eval "$(pyenv virtualenv-init -)"' }}
+#             {%- elif item == '~/.profile' %}
+#             export PATH="$HOME/.pyenv/bin:$PATH"
+#             eval "$(pyenv init --path)"
+#             eval "$(pyenv virtualenv-init -)"
+#             {%- else %}
+#             {%- endif %}
+#       loop:
+#         - ~/.bashrc
+#         - ~/.profile
+#       when: not pyenv_initialized.stdout | default('') | regex_search('pyenv init')
 
 
-- name: Verify Python version
-  command: python3 --version
-  register: python3_version
+#     - name: Install Python
+#       shell: |
+#         ~/.pyenv/bin/pyenv install 3.12.0
+#         ~/.pyenv/bin/pyenv global 3.12.0
+#       environment:
+#         PATH: "{{ ansible_env.PATH }}:~/.pyenv/bin"
+#       when: not pyenv_initialized.stdout | default('') | regex_search('3.12.0')
 
-- name: Display Python version
-  debug:
-    var: python3_version.stdout_lines
 
+# - name: Verify Python version
+#   command: python3 --version
+#   register: python3_version
+
+# - name: Display Python version
+#   debug:
+#     var: python3_version.stdout_lines
+
+- name: install python3
+  ansible.builtin.apt:
+    name: 
+      - python3.12
+      - python3-pip
+      - python3-dev
+      - libpq-dev
+      - python3-apt
+    state: present
 
 - name: Install Python packages using pip(a package manager for python)
   block:

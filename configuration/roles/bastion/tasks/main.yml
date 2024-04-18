@@ -16,7 +16,8 @@
 # - include_tasks: db-client.yml
 #   when: ansible_os_family == 'Debian'
 
-- include_tasks: modules.yml
+- name: Install community modules
+  include_tasks: modules.yml
   when: ansible_os_family == 'Debian'
 
 # - include_tasks: docker.yml

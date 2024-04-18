@@ -1,2 +1,3 @@
 - name: bastion assignment
-  import_playbook: .../static/assignments/bastion.yml
+  import_playbook: /home/thecountt/vm-pipeline/configuration/static/assignments/bastion.yml
+  
