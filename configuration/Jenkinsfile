@@ -64,7 +64,7 @@ pipeline {
         // COMMENT OUT THIS STAGE TO RUN DYNAMIC INVENTORY
       stage('Execute Ansible playbook - for Static Inventory') {
         steps {
-          ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: "inventory/${InventoryFile}", playbook: "playbooks/${Playbooks}", vaultCredentialsId: 'ansible-vault-password'
+          ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: "static/inventory/${InventoryFile}", playbook: "static/playbooks/${Playbooks}", vaultCredentialsId: 'ansible-vault-password'
           }
         }
 
