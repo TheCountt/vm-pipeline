@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-      ANSIBLE_CONFIG="${WORKSPACE}/ansible.cfg"
+      ANSIBLE_CONFIG="${WORKSPACE}/configuration/ansible.cfg"
     }
 
   options {
