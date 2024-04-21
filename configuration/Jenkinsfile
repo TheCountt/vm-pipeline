@@ -25,7 +25,7 @@ pipeline {
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/TheCountt/vm-pipeline.git'
+            git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/TheCountt/vm-pipeline.git'
           }
        }
 
