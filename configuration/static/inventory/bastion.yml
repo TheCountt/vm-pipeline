@@ -1,5 +1,15 @@
 ---
-local_hosts:
+all:
   hosts:
     localhost:
-      ansible_connection: local
+      ansible_connection: ssh
+
+
+
+# all:
+#  children:
+#    bastion:
+#      hosts:
+#       172.23.247.152:
+#         ansible_user: thecountt
+#         ansible_connection: ssh
