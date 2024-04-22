@@ -11,7 +11,7 @@ pipeline {
   }
 
   triggers {
-    cron('H */8 * * *') // Build every 4 hours to keep services up e.g sonarqube
+    cron('H */8 * * *') // Build every 8 hours to keep services up e.g sonarqube
     }
 
   stages{
