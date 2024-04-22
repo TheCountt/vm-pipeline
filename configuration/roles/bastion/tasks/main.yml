@@ -1,10 +1,12 @@
 ---
 # Debian OS
-- name: Install all necessary packages and tools on Debian OS
-  include_tasks: debian.yml
+
+- name: Install python packages and dependencies for ansible
+  include_tasks: pyenv.yml
   when: ansible_os_family == 'Debian'
 
-- include_tasks: pyenv.yml
+- name: Install all necessary packages and tools on Debian OS
+  include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
 - include_tasks: nvm.yml
