@@ -25,12 +25,6 @@
     state: directory
     mode: '0755'
 
-# - name: Extract the zip file
-#   ansible.builtin.unarchive:
-#     src: /opt/sonarqube-9.9.4.87374.zip
-#     dest: /opt/
-#     remote_src: yes
-
 - name: Extract the zip file
   ansible.builtin.unarchive:
     src: /opt/sonarqube-9.9.4.87374.zip
