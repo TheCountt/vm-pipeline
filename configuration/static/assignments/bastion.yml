@@ -6,5 +6,5 @@
     USER: thecountt
   tags: local
   roles:
-    # - bastion
+    - bastion
     - sonarqube 
