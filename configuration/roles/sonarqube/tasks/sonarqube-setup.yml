@@ -12,9 +12,12 @@
 - name: download the zip file
   ansible.builtin.get_url:
     url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.4.87374.zip
-    dest: /opt/
+    dest: /opt/sonarqube-9.9.4.87374.zip
     mode: 0755
     timeout: 300
+  register: download_result
+  ignore_errors: true
+  changed_when: download_result.changed
 
 - name: Create /opt/sonarqube/
   ansible.builtin.file:
@@ -22,11 +25,19 @@
     state: directory
     mode: '0755'
 
+# - name: Extract the zip file
+#   ansible.builtin.unarchive:
+#     src: /opt/sonarqube-9.9.4.87374.zip
+#     dest: /opt/
+#     remote_src: yes
+
 - name: Extract the zip file
   ansible.builtin.unarchive:
     src: /opt/sonarqube-9.9.4.87374.zip
     dest: /opt/
     remote_src: yes
+    creates: /opt/sonarqube # Specify the directory where the files will be extracted
+  when: download_result.changed
 
 - name: Copy /opt/sonarqube/
   ansible.builtin.copy:
