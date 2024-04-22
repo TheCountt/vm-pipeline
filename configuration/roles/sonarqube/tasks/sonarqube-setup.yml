@@ -35,10 +35,10 @@
     remote_src: yes
     follow: yes
 
-- name: remove the zip file
-  ansible.builtin.file:
-    path: /opt/sonarqube-9.9.4.87374.zip
-    state: absent
+# - name: remove the zip file
+#   ansible.builtin.file:
+#     path: /opt/sonarqube-9.9.4.87374.zip
+#     state: absent
 
 # - name: add user to run sonar
 #   shell: >
